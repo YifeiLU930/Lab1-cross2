@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 
@@ -11,17 +12,17 @@ public class Character : MonoBehaviour
     public float gravity = 9.81f;
     public float jumpSpeed = 10.0f;
 
-    Vector3 moveDir;
-    CharacterController controller;
+    Vector3 curMoveInput;
+    CharacterController charController;
 
-
+  
     // Start is called before the first frame update
     void Start()
     {
         try
         {
-            controller = GetComponent<CharacterController>();
-            controller.minMoveDistance = 0.0f;
+            charController = GetComponent<CharacterController>();
+            charController.minMoveDistance = 0.0f;
 
             if (moveSpeed <= 0.0f)
             {
@@ -46,29 +47,53 @@ public class Character : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float hInput = Input.GetAxisRaw("Horizontal");
-        float vInput = Input.GetAxisRaw("Vertical");
-
-       
-       
-        if (controller.isGrounded)
+      
+        if (charController. isGrounded)
         {
-            moveDir = new Vector3(hInput, 0, vInput) * moveSpeed;
-            moveDir = transform.TransformDirection(moveDir);
-
-            if (Input.GetButton("Jump"))
-            {
-                moveDir.y = jumpSpeed;
-            }
-
+            curMoveInput = transform.TransformDirection(curMoveInput);
            
         }
+        else
+        {
+            curMoveInput.y -= gravity;
+        }
+       
+        charController.Move(curMoveInput * Time.deltaTime);
+       
+
+    }
 
 
-        moveDir.y -= gravity;
-        controller.Move(moveDir * Time.deltaTime);
+    public void MovePlayer(InputAction.CallbackContext context)
+    {
+        if(context.canceled)
+        {
+            curMoveInput = Vector3.zero;
+            return;
+        }
+        
+        Vector2 move = context.action.ReadValue<Vector2>();
+        move.Normalize();
 
+        Vector3 moveDir = new Vector3(move.x, 0, move.y) * moveSpeed;
 
+        curMoveInput += moveDir; 
+        
+    }
+
+    public void Fire(InputAction.CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame())
+        {
+            Debug.Log("fire pressed");
+        }
+    }
+
+    public void Jump(InputAction.CallbackContext context)
+    {
+       if (charController.isGrounded)
+            curMoveInput.y += jumpSpeed;
+        
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
