@@ -14,6 +14,8 @@ public class Character : MonoBehaviour
 
     Vector3 curMoveInput;
     CharacterController charController;
+    Animator anim;
+   
 
   
     // Start is called before the first frame update
@@ -23,6 +25,7 @@ public class Character : MonoBehaviour
         {
             charController = GetComponent<CharacterController>();
             charController.minMoveDistance = 0.0f;
+            anim = GetComponent<Animator>();
 
             if (moveSpeed <= 0.0f)
             {
@@ -59,6 +62,10 @@ public class Character : MonoBehaviour
         }
        
         charController.Move(curMoveInput * Time.deltaTime);
+
+       
+
+
        
 
     }
