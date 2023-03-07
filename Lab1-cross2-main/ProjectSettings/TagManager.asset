@@ -7,6 +7,7 @@ TagManager:
   - Pickup1
   - Pickup2
   - Pickup3
+  - Patrol
   layers:
   - Default
   - TransparentFX
