@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Character))]
+[RequireComponent(typeof(Character), typeof(WeaponPickup))]
 public class Controller : MonoBehaviour
 {
 
     PlayerInputs input;
     Character player;
+    WeaponPickup pickup;
 
     private void Awake()
     {
@@ -29,10 +30,13 @@ public class Controller : MonoBehaviour
     void Start()
     {
         player = GetComponent<Character>();
+        pickup = GetComponent<WeaponPickup>();
         input.Player.Move.performed += ctx => player.MovePlayer(ctx);
         input.Player.Move.canceled += ctx => player.MovePlayer(ctx);
-        input.Player.Fire.performed += ctx => player.Fire(ctx);
+        input.Player.Fire.performed += ctx => pickup.Fire(ctx);
         input.Player.Jump.performed += ctx => player.Jump(ctx);
+        input.Player.Throw.performed += ctx => pickup.Throw(ctx);
+       
     }
 
     

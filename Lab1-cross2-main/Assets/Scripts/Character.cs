@@ -12,10 +12,15 @@ public class Character : MonoBehaviour
     public float gravity = 9.81f;
     public float jumpSpeed = 10.0f;
 
+    Rigidbody rb;
     Vector3 curMoveInput;
     CharacterController charController;
     Animator anim;
-   
+    
+  
+
+    public Rigidbody projectilePrefab;
+    public Transform spawnPoint;
 
   
     // Start is called before the first frame update
@@ -26,6 +31,7 @@ public class Character : MonoBehaviour
             charController = GetComponent<CharacterController>();
             charController.minMoveDistance = 0.0f;
             anim = GetComponent<Animator>();
+           
 
             if (moveSpeed <= 0.0f)
             {

@@ -8,6 +8,8 @@ TagManager:
   - Pickup2
   - Pickup3
   - Patrol
+  - Weapon
+  - AttachPoint
   layers:
   - Default
   - TransparentFX
