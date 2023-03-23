@@ -10,6 +10,8 @@ TagManager:
   - Patrol
   - Weapon
   - AttachPoint
+  - Enemy
+  - Projectile
   layers:
   - Default
   - TransparentFX
